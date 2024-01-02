@@ -1,0 +1,44 @@
+The Stanford Research Institute Problem Solver, known by its acronym STRIPS, is an automated planner developed by Richard Fikes and Nils Nilsson in 1971 at SRI International.[1] The same name was later used to refer to the formal language of the inputs to this planner. This language is the base for most of the languages for expressing automated planning problem instances in use today; such languages are commonly known as action languages. 
+
+
+A STRIPS instance is composed of:
+
+An initial state;
+The specification of the goal states – situations that the planner is trying to reach;
+A set of actions. For each action, the following are included:
+	preconditions (what must be established before the action is performed);
+	postconditions (what is established after the action is performed).
+
+
+
+A sample STRIPS problem
+A monkey is at location A in a lab. There is a box in location C. The monkey wants the bananas that are hanging from the ceiling in location B, but it needs to move the box and climb onto it in order to reach them.
+
+Initial state: At(A), Level(low), BoxAt(C), BananasAt(B)
+Goal state:    Have(bananas)
+Actions:
+               // move from X to Y
+               _Move(X, Y)_
+               Preconditions:  At(X), Level(low)
+               Postconditions: not At(X), At(Y)
+               
+               // climb up on the box
+               _ClimbUp(Location)_
+               Preconditions:  At(Location), BoxAt(Location), Level(low)
+               Postconditions: Level(high), not Level(low)
+               
+            
+		// and so on ..
+
+
+Complexity
+Deciding whether any plan exists for a propositional STRIPS instance is PSPACE-complete. Various restrictions can be enforced in order to decide if a plan exists in polynomial time or at least make it an NP-complete problem.[2]
+
+
+
+Macro operator
+In the monkey and banana problem, the robot monkey has to execute a sequence of actions to reach the banana at the ceiling. A single action provides a small change in the game. To simplify the planning process, it make sense to invent an abstract action, which isn't available in the normal rule description.[3] The super-action consists of low level actions and can reach high-level goals. The advantage is that the computational complexity is lower, and longer tasks can be planned by the solver.
+
+Identifying new macro operators for a domain can be realized with genetic programming.[4] The idea is, not to plan the domain itself, but in the pre-step, a heuristics is created that allows the domain to be solved much faster. In the context of reinforcement learning, a macro-operator is called an option. Similar to the definition within AI planning, the idea is, to provide a temporal abstraction (span over a longer period) and to modify the game state directly on a higher layer.[5]
+
+

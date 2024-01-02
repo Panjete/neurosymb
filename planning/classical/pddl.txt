@@ -1,0 +1,51 @@
+The Planning Domain Definition Language (PDDL) is an attempt to standardize Artificial Intelligence (AI) planning languages. It was first developed by Drew McDermott and his colleagues in 1998 (inspired by STRIPS and ADL among others) mainly to make the 1998/2000 International Planning Competition (IPC) possible, and then evolved with each competition.
+
+
+Example
+This is the domain definition of a STRIPS instance for the automated planning of a robot with two gripper arms.[21]
+
+(define (domain gripper-strips)
+  (:predicates (room ?r) (ball ?b) (gripper ?g) (at-robby ?r)
+               (at ?b ?r) (free ?g) (carry ?o ?g))
+  (:action move
+   :parameters (?from ?to)
+   :precondition (and (room ?from)
+                      (room ?to)
+                      (at-robby ?from))
+   :effect (and (at-robby ?to)
+                (not (at-robby ?from))))
+  (:action pick
+   :parameters (?obj ?room ?gripper)
+   :precondition (and (ball ?obj)
+                      (room ?room)
+                      (gripper ?gripper)
+                      (at ?obj ?room)
+                      (at-robby ?room)
+                      (free ?gripper))
+   :effect (and (carry ?obj ?gripper)
+                (not (at ?obj ?room))
+                (not (free ?gripper)))
+
+	)
+ )
+
+And this is the problem definition that instantiates the previous domain definition with a concrete environment with two rooms and two balls.
+
+(define (problem strips-gripper2)
+    (:domain gripper-strips)
+    (:objects rooma roomb ball1 ball2 left right)
+    (:init (room rooma)
+           (room roomb)
+           (ball ball1)
+           (ball ball2)
+           (gripper left)
+           (gripper right)
+           (at-robby rooma)
+           (free left)
+           (free right)
+           (at ball1 rooma)
+           (at ball2 rooma))
+    (:goal (at ball1 roomb)))
+
+
+
